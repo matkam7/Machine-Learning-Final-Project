@@ -11,6 +11,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
 
 male_dir = "male"
 female_dir = "female"
@@ -39,12 +41,12 @@ ffts = []
 y = []
 for dir_name in os.listdir(male_dir):
     fft = audio_to_fft("./" + male_dir + "/" + dir_name + "/1.wav")
-    fft.resize(20000)
+    fft.resize(30000)
     ffts.append(fft)
     y.append(0)
 for dir_name in os.listdir(female_dir):
     fft = audio_to_fft("./" + female_dir + "/" + dir_name + "/1.wav")
-    fft.resize(20000)
+    fft.resize(30000)
     ffts.append(fft)
     y.append(1)
 
@@ -54,16 +56,16 @@ for dir_name in os.listdir(female_dir):
 ffts = [e.real for e in ffts]
 X_train, X_test, y_train, y_test = train_test_split(ffts,
                                                     y,
-                                                    test_size=0.2,
+                                                    test_size=0.4,
                                                     stratify=y)
 X_train = np.array(X_train)
 X_test = np.array(X_test)
 y_train = np.array(y_train)
 y_test = np.array(y_test)
 
-linreg = LinearRegression().fit(X_train, y_train)
-linreg.score(X_train, y_train)
+linreg = LogisticRegression().fit(X_train, y_train)
+
 predited = linreg.predict(X_test)
-actual = y_test
-print("predicted: ", predited)
-print("actual: ", actual)
+print("y_test:   ", y_test)
+print("predited: ", predited)
+print("accuracy: ", accuracy_score(y_test, predited))
