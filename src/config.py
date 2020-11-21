@@ -1,3 +1,13 @@
+import os
+
+tf_device = "GPU"
+
+if tf_device == "GPU":
+    pass
+elif tf_device == "CPU":
+    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID" 
+    os.environ["CUDA_VISIBLE_DEVICES"] = ""
+
 import tensorflow as tf
 
 # Configuration variables
@@ -6,7 +16,7 @@ female_dir = "female"
 test_split = 0.4
 
 # Configuration functions
-
+# Intel Iris Plus Graphics 1536 MB
 
 def configure_tensorflow():
     # Setup Tensorflow
@@ -16,3 +26,4 @@ def configure_tensorflow():
     config.gpu_options.allow_growth = True
     session = tf.compat.v1.Session(config=config)
     tf.compat.v1.keras.backend.set_session(session)
+

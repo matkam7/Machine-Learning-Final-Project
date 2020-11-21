@@ -59,7 +59,7 @@ if args.nn or run_all_models:
         ("CNN", models.cnn.run_model))
 if args.ml or run_all_models:
     ml_models.append(
-        ("Linear Regression", models.logistic_regression.run_model))
+        ("Logistic Regression", models.logistic_regression.run_model))
 
 # Run all models
 ml_results = []
