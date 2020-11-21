@@ -5,3 +5,4 @@ class Result:
         self.test_acc = test_acc
         self.train_acc = train_acc
         self.error = error
+

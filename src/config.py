@@ -16,8 +16,6 @@ female_dir = "female"
 test_split = 0.4
 
 # Configuration functions
-# Intel Iris Plus Graphics 1536 MB
-
 def configure_tensorflow():
     # Setup Tensorflow
     config = tf.compat.v1.ConfigProto(gpu_options=tf.compat.v1.GPUOptions(

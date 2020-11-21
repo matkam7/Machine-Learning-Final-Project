@@ -11,6 +11,7 @@ from result import Result
 
 import models.logistic_regression
 import models.cnn
+import models.svm
 
 # Parse arguments
 parser = argparse.ArgumentParser()
@@ -60,6 +61,8 @@ if args.nn or run_all_models:
 if args.ml or run_all_models:
     ml_models.append(
         ("Logistic Regression", models.logistic_regression.run_model))
+    ml_models.append(
+        ("SVM", models.svm.run_model))
 
 # Run all models
 ml_results = []
