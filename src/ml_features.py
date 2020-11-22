@@ -30,5 +30,5 @@ def extract_features():
         ffts.append(fft)
         y.append(1)
     # TODO FIX LATER
-    ffts = [e.real for e in ffts]
+    ffts = [e.imag for e in ffts]
     return y, ffts

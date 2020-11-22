@@ -25,7 +25,7 @@ def extract_features(desired_size=(128, 128)):
             "./" + config.male_dir + "/" + dir_name + "/1.wav")
         frequencies, times, spectrogram = signal.spectrogram(
             samples, sample_rate)
-        spectrogram = scale_array(spectrogram, (128, 128))
+        spectrogram = scale_array(spectrogram,desired_size)
         specs.append(spectrogram)
         y.append(0)
 
@@ -34,7 +34,7 @@ def extract_features(desired_size=(128, 128)):
             "./" + config.female_dir + "/" + dir_name + "/1.wav")
         frequencies, times, spectrogram = signal.spectrogram(
             samples, sample_rate)
-        spectrogram = scale_array(spectrogram, (128, 128))
+        spectrogram = scale_array(spectrogram, desired_size)
         specs.append(spectrogram)
         y.append(1)
 

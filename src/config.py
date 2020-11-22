@@ -15,6 +15,9 @@ male_dir = "male"
 female_dir = "female"
 test_split = 0.4
 
+# CNN
+cnn_input_size = (256, 256)
+
 # Configuration functions
 def configure_tensorflow():
     # Setup Tensorflow
@@ -24,4 +27,3 @@ def configure_tensorflow():
     config.gpu_options.allow_growth = True
     session = tf.compat.v1.Session(config=config)
     tf.compat.v1.keras.backend.set_session(session)
-
