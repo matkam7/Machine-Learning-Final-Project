@@ -19,16 +19,35 @@ def extract_features():
     y = []
 
     for dir_name in os.listdir(config.male_dir):
-        fft = audio_to_fft("./" + config.male_dir + "/" + dir_name + "/1.wav")
-        fft.resize(30000)
-        ffts.append(fft)
-        y.append(0)
+        for filename in os.listdir(os.path.join(config.male_dir, dir_name)):
+            name = os.path.join(
+                config.male_dir, dir_name, filename)
+            fft = audio_to_fft(name)
+            # fft.resize(30000)
+
+            ffts.append([fft.min().imag, fft.max().imag,
+                         np.std(fft).imag,
+                         np.mean(fft).imag,
+                         np.median(fft).imag
+                         ])
+            # x = librosa.load(name, sr=None)
+            y.append(0)
+
     for dir_name in os.listdir(config.female_dir):
-        fft = audio_to_fft("./" + config.female_dir +
-                           "/" + dir_name + "/1.wav")
-        fft.resize(30000)
-        ffts.append(fft)
-        y.append(1)
+        for filename in os.listdir(os.path.join(config.female_dir, dir_name)):
+            fft = audio_to_fft(os.path.join(
+                config.female_dir, dir_name, filename))
+            # fft.resize(30000)
+
+            ffts.append([
+                fft.min().real,
+                fft.max().real,
+                np.std(fft).imag,
+                np.mean(fft).imag,
+                np.median(fft).imag,
+            ])
+            # ffts.append(fft)
+            y.append(1)
     # TODO FIX LATER
-    ffts = [e.imag for e in ffts]
+    # ffts = [e.imag for e in ffts]
     return y, ffts

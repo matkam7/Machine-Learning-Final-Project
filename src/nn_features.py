@@ -21,21 +21,25 @@ def extract_features(desired_size=(128, 128)):
     y = []
 
     for dir_name in os.listdir(config.male_dir):
-        sample_rate, samples = wav.read(
-            "./" + config.male_dir + "/" + dir_name + "/1.wav")
-        frequencies, times, spectrogram = signal.spectrogram(
-            samples, sample_rate)
-        spectrogram = scale_array(spectrogram,desired_size)
-        specs.append(spectrogram)
-        y.append(0)
+        for filename in os.listdir(os.path.join(config.male_dir, dir_name)):
+            name = os.path.join(
+                config.male_dir, dir_name, filename)
+            sample_rate, samples = wav.read(name)
+            frequencies, times, spectrogram = signal.spectrogram(
+                samples, sample_rate)
+            spectrogram = scale_array(spectrogram, desired_size)
+            specs.append(spectrogram)
+            y.append(0)
 
     for dir_name in os.listdir(config.female_dir):
-        sample_rate, samples = wav.read(
-            "./" + config.female_dir + "/" + dir_name + "/1.wav")
-        frequencies, times, spectrogram = signal.spectrogram(
-            samples, sample_rate)
-        spectrogram = scale_array(spectrogram, desired_size)
-        specs.append(spectrogram)
-        y.append(1)
+        for filename in os.listdir(os.path.join(config.female_dir, dir_name)):
+            name = os.path.join(
+                config.female_dir, dir_name, filename)
+            sample_rate, samples = wav.read(name)
+            frequencies, times, spectrogram = signal.spectrogram(
+                samples, sample_rate)
+            spectrogram = scale_array(spectrogram, desired_size)
+            specs.append(spectrogram)
+            y.append(1)
 
     return y, specs

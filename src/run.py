@@ -31,7 +31,8 @@ if run_all_models or args.ml:
     y_ml, x_ml = ml_features.extract_features()
     y_ml, x_ml = np.array(y_ml), np.array(x_ml)
 if run_all_models or args.nn:
-    y_nn, x_nn = nn_features.extract_features(desired_size=config.cnn_input_size)
+    y_nn, x_nn = nn_features.extract_features(
+        desired_size=config.cnn_input_size)
     y_nn, x_nn = np.array(y_nn), np.array(x_nn)
 
 # Use KFold on the data
@@ -95,7 +96,8 @@ if args.ml or run_all_models:
         accuracies = np.array([result.test_acc for result in results])
         test_acc_mean = np.mean(accuracies)
         test_acc_std = np.std(accuracies)
-        ml_results.append((name, Result(test_acc_mean=test_acc_mean, test_acc_std=test_acc_std)))
+        ml_results.append(
+            (name, Result(test_acc_mean=test_acc_mean, test_acc_std=test_acc_std)))
 
 if args.nn or run_all_models:
     nn_results_dict = dict()
@@ -104,15 +106,15 @@ if args.nn or run_all_models:
             nn_results_dict[name].append(nn_result)
         else:
             nn_results_dict[name] = [nn_result]
-    
+
     # find mean and average accuracy for each model
     nn_results = []
     for name, results in nn_results_dict.items():
         accuracies = np.array([result.test_acc for result in results])
         test_acc_mean = np.mean(accuracies)
         test_acc_std = np.std(accuracies)
-        nn_results.append((name, Result(test_acc_mean=test_acc_mean, test_acc_std=test_acc_std)))
-
+        nn_results.append(
+            (name, Result(test_acc_mean=test_acc_mean, test_acc_std=test_acc_std)))
 
 
 # Print results
@@ -126,7 +128,8 @@ if args.nn or run_all_models:
             print(f"\tError: {result.error}")
             continue
         if result.test_acc_mean and result.test_acc_std:
-            print(f"\tTest Accuracy: {result.test_acc_mean} (+- {result.test_acc_std})')")
+            print(
+                f"\tTest Accuracy: {result.test_acc_mean} (+- {result.test_acc_std})')")
 if args.ml or run_all_models:
     print("-------------------------------------")
     print("Machine Learning results")
@@ -137,4 +140,5 @@ if args.ml or run_all_models:
             print(f"\tError: {result.error}")
             continue
         if result.test_acc_mean and result.test_acc_std:
-            print(f"\tTest Accuracy: {result.test_acc_mean} (+- {result.test_acc_std})')")
+            print(
+                f"\tTest Accuracy: {result.test_acc_mean} (+- {result.test_acc_std})')")

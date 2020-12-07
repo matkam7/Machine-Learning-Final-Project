@@ -39,15 +39,15 @@ def run_model(
     x_test = np.expand_dims(x_test, axis=3)
 
     # Stop as soon as validation loss goes significantly up
-    es = EarlyStopping(monitor='val_loss', mode='min', restore_best_weights=True, patience=20)
-    
+    # es = EarlyStopping(monitor='val_loss', mode='min', restore_best_weights=True, patience=20)
+
     # Train the model.
     model.fit(
         x_train,
         to_categorical(y_train),
-        epochs=20,
-        validation_split=0.3,
-        callbacks=[es]
+        epochs=15,
+        validation_split=0.2,
+        # callbacks=[es]
     )
     # Save the model to disk.
     # model.save_weights('cnn.h5')
