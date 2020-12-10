@@ -19,7 +19,7 @@ def extract_features():
     all_features = []
     y = []
 
-    for filename in os.listdir(config.male_dir):
+    for i, filename in enumerate(os.listdir(config.male_dir_rnn)):
         # name = os.path.join(
         #     config.male_dir, filename)
         # fft = audio_to_fft(name)
@@ -32,13 +32,19 @@ def extract_features():
         #              ])
         # x = librosa.load(name, sr=None)
 
-        df = pd.read_csv(os.path.join(config.male_dir, filename))
+        df = pd.read_csv(os.path.join(config.male_dir_rnn, filename))
         features = df.values.tolist()
-        all_features.append(features[0])
+        # features = np.swapaxes(np.array(features), 0, 1)
+
+        features = np.swapaxes(np.array(features), 0, 1)
+        features = features[0:69]
+        features = np.swapaxes(np.array(features), 0, 1)
+
+        all_features.append(features[0:300])
 
         y.append(0)
 
-    for filename in os.listdir(config.female_dir):
+    for i, filename in enumerate(os.listdir(config.female_dir_rnn)):
         # fft = audio_to_fft(os.path.join(
         #     config.female_dir, filename))
         # fft.resize(30000)
@@ -52,9 +58,12 @@ def extract_features():
         # ])
         # ffts.append(fft)
 
-        df = pd.read_csv(os.path.join(config.female_dir, filename))
+        df = pd.read_csv(os.path.join(config.female_dir_rnn, filename))
         features = df.values.tolist()
-        all_features.append(features[0])
+        features = np.swapaxes(np.array(features), 0, 1)
+        features = features[0:69]
+        features = np.swapaxes(np.array(features), 0, 1)
+        all_features.append(features[0:300])
 
         y.append(1)
     return y, all_features

@@ -1,7 +1,7 @@
 import tensorflow as tf
 import os
 
-tf_device = "GPU"
+tf_device = "CPU"
 
 if tf_device == "GPU":
     pass
@@ -11,21 +11,33 @@ elif tf_device == "CPU":
 
 
 # Configuration variables
-male_dir = "male"
-female_dir = "female"
-test_split = 0.4
+dataset = "speakers_all"
+
+male_dir = "male_out"
+female_dir = "female_out"
+male_dir_nn = "male_out_nn"
+female_dir_nn = "female_out_nn"
+male_dir_rnn = "male_out_rnn"
+female_dir_rnn = "female_out_rnn"
 
 # CNN
-cnn_input_size = (64, 64)
+cnn_input_size = (345, 256)
 
 # Configuration functions
 
 
 def configure_tensorflow():
     # Setup Tensorflow
-    config = tf.compat.v1.ConfigProto(gpu_options=tf.compat.v1.GPUOptions(
-        per_process_gpu_memory_fraction=0.8)
-    )
-    config.gpu_options.allow_growth = True
-    session = tf.compat.v1.Session(config=config)
-    tf.compat.v1.keras.backend.set_session(session)
+    import tensorflow as tf
+    gpus = tf.config.experimental.list_physical_devices('GPU')
+    if gpus:
+        try:
+            # Currently, memory growth needs to be the same across GPUs
+            for gpu in gpus:
+                tf.config.experimental.set_memory_growth(gpu, True)
+            logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+            print(len(gpus), "Physical GPUs,", len(
+                logical_gpus), "Logical GPUs")
+        except RuntimeError as e:
+            # Memory growth must be set before GPUs have been initialized
+            print(e)

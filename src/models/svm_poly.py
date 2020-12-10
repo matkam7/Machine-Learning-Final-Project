@@ -9,7 +9,7 @@ from result import Result
 
 
 def run_model(x_train, x_test, y_train, y_test):
-    clf = svm.SVC(kernel='linear', gamma="scale")  # Linear Kernel
+    clf = svm.SVC(kernel='poly', degree=2, gamma="scale")  # poly Kernel
 
     scaling = MinMaxScaler(feature_range=(-1, 1)).fit(x_train)
     x_train = scaling.transform(x_train)

@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 
 cnn.h5
+
+out.txt

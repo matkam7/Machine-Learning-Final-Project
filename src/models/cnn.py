@@ -5,9 +5,11 @@ from tensorflow.keras.layers import Conv2D, Dense, Flatten, MaxPooling2D
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
 from keras.callbacks import EarlyStopping
+import sklearn
 
 from result import Result
 import config
+from collections import Counter
 
 
 def run_model(
@@ -15,12 +17,13 @@ def run_model(
         num_filters=100, filter_size=3, pool_size=2):
     # Build the model.
     model = Sequential([
-        Conv2D(num_filters, filter_size,
+        Conv2D(20, 3,
                activation='relu', input_shape=(config.cnn_input_size[1], config.cnn_input_size[0], 1)),
-        Conv2D(num_filters, filter_size,
-               activation='relu', input_shape=(128, 128, 1)),
-        MaxPooling2D(pool_size=pool_size),
+        MaxPooling2D(pool_size=2),
+        Conv2D(60, filter_size, activation='relu'),
+        MaxPooling2D(pool_size=2),
         Flatten(),
+        Dense(128, activation='relu'),
         Dense(2, activation='softmax'),
     ])
 
@@ -32,12 +35,8 @@ def run_model(
     )
 
     # Normalize the images.
-    x_train = (x_train / 255) - 0.5
-    x_test = (x_test / 255) - 0.5
-    # Reshape the images.
-    x_train = np.expand_dims(x_train, axis=3)
-    x_test = np.expand_dims(x_test, axis=3)
-
+    x_train /= 255.0
+    x_test /= 255.0
     # Stop as soon as validation loss goes significantly up
     # es = EarlyStopping(monitor='val_loss', mode='min', restore_best_weights=True, patience=20)
 
@@ -45,9 +44,9 @@ def run_model(
     model.fit(
         x_train,
         to_categorical(y_train),
-        epochs=15,
+        epochs=9,
         validation_split=0.2,
-        # callbacks=[es]
+        shuffle=True
     )
     # Save the model to disk.
     # model.save_weights('cnn.h5')
@@ -57,5 +56,4 @@ def run_model(
     predictions = model.predict(x_test)
     # Print our model's predictions.
     predictions = np.argmax(predictions, axis=1)
-    test_acc = accuracy_score(y_test, predictions)
-    return Result(test_acc=test_acc)
+    return Result(result=predictions, y_test=y_test)
